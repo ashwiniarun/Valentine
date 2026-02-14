@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            overflow-x: hidden;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><text y="20" font-size="20">❤️</text></svg>'), auto;
+        }
+
+        /* Scene 1: Envelope */
+        #scene1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #C31432 0%, #240b36 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+
+        #scene1.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .envelope-container {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .envelope-container:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .envelope {
+            width: 300px;
+            height: 200px;
+            position: relative;
+        }
+
+        .envelope-back {
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(135deg, #ffe4e1, #ffb6c1);
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .envelope-flap {
+            width: 300px;
+            height: 120px;
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top;
+            clip-path: polygon(0 0, 50% 60%, 100% 0);
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .envelope-container.opening .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        .heart-sticker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            text-shadow: 0 5px 15px rgba(255,0,0,0.5);
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            25% { transform: translate(-50%, -50%) scale(1.1); }
+            50% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .instruction {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 24px;
+            font-family: 'Caveat', cursive;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: fall 3s linear forwards;
+            z-index: 1000;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Scene 2: Memory Hearts */
+        #scene2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #ffeef8 0%, #fff0f5 100%);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        #scene2.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .valentine-header {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header-title {
+            font-family: 'Caveat', cursive;
+            font-size: 56px;
+            color: #c44569;
+            margin-bottom: 20px;
+            text-shadow: 0 3px 15px rgba(196, 69, 105, 0.3);
+            font-weight: 700;
+        }
+
+        .header-message {
+            font-family: 'Crimson Text', serif;
+            font-size: 28px;
+            color: #ff6b9d;
+            line-height: 1.6;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 0 2px 10px rgba(255, 107, 157, 0.2);
+        }
+
+        .rope {
+            width: 90%;
+            max-width: 1200px;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                #8B4513,
+                #8B4513 10px,
+                #A0522D 10px,
+                #A0522D 20px
+            );
+            margin: 60px auto 0;
+            position: relative;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+        .memories-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 60px;
+            padding: 40px 0 120px;
+        }
+
+        .memory-card {
+            width: 280px;
+            background: linear-gradient(135deg, #ffb3d9, #ff8cc6);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.3);
+            position: relative;
+            animation: swingIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        .memory-card:nth-child(1) { animation-delay: 0.2s; }
+        .memory-card:nth-child(2) { animation-delay: 0.4s; }
+        .memory-card:nth-child(3) { animation-delay: 0.6s; }
+        .memory-card:nth-child(4) { animation-delay: 0.8s; }
+        .memory-card:nth-child(5) { animation-delay: 1s; }
+        .memory-card:nth-child(6) { animation-delay: 1.2s; }
+        .memory-card:nth-child(7) { animation-delay: 1.4s; }
+        .memory-card:nth-child(8) { animation-delay: 1.6s; }
+
+        @keyframes swingIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px) rotate(-10deg);
+            }
+            60% {
+                transform: translateY(10px) rotate(2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        .clothespin {
+            width: 40px;
+            height: 15px;
+            background: #D2691E;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .clothespin::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 15px;
+            background: #A0522D;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .memory-photo {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #ff85c0, #ffaed5);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            box-shadow: inset 0 3px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .memory-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .memory-text {
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            color: #4a1a2c;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .continue-btn {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #ff1493, #c71585);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 24px;
+            font-family: 'Caveat', cursive;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(199, 21, 133, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .continue-btn:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 15px 40px rgba(199, 21, 133, 0.6);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* Scene 3: Snoopy Walking */
+        #scene3 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #ffebf0 0%, #ffe8f5 100%);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        #scene3.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .snoopy {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            top: 50%;
+            left: -200px;
+            transform: translateY(-50%);
+            animation: walkAcross 3s ease-out forwards;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+        }
+
+        .snoopy img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes walkAcross {
+            0% { 
+                left: -200px; 
+                transform: translateY(-50%) rotate(0deg);
+            }
+            100% { 
+                left: 50%; 
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+        }
+
+        .snoopy.dancing {
+            animation: danceAndSpin 2s ease-in-out forwards;
+        }
+
+        @keyframes danceAndSpin {
+            0% { 
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+            }
+            20% {
+                transform: translate(-50%, -50%) rotate(180deg) scale(1.15);
+            }
+            40% {
+                transform: translate(-50%, -50%) rotate(360deg) scale(0.9);
+            }
+            60% {
+                transform: translate(-50%, -50%) rotate(540deg) scale(1.2);
+            }
+            80% {
+                transform: translate(-50%, -50%) rotate(720deg) scale(0.95);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(1080deg) scale(1.1);
+            }
+        }
+
+        .heart-explosion {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .heart-explosion.active {
+            display: block;
+        }
+
+        .explosion-heart {
+            position: absolute;
+            font-size: 40px;
+            animation: explode 1.5s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Scene 4: Choice */
+        #scene4 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #f38181 100%);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        #scene4.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .question {
+            font-size: 48px;
+            color: white;
+            margin-bottom: 60px;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .choices {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .choice-btn {
+            padding: 30px 60px;
+            font-size: 32px;
+            font-family: 'Caveat', cursive;
+            background: white;
+            color: #c44569;
+            border: 4px solid #c44569;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .choice-btn:nth-child(1) { animation-delay: 0.2s; }
+        .choice-btn:nth-child(2) { animation-delay: 0.4s; }
+        .choice-btn:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .choice-btn:hover {
+            transform: scale(1.15) rotate(-3deg);
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            color: white;
+            box-shadow: 0 15px 40px rgba(196, 69, 105, 0.5);
+        }
+
+        /* Scene 5: Final Photo */
+        #scene5 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffeef8, #fff0f5);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        #scene5.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .final-photo {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff8cc6, #ffb3d9);
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.4);
+            margin-bottom: 40px;
+            animation: photoReveal 1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            border: 8px solid white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes photoReveal {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.1) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .user-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .final-message {
+            font-size: 40px;
+            color: #c44569;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            margin-bottom: 15px;
+            animation: fadeIn 1.5s ease-out;
+            text-shadow: 0 2px 10px rgba(196, 69, 105, 0.2);
+        }
+
+        .final-subtitle {
+            font-size: 32px;
+            color: #ff6b9d;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            animation: fadeIn 2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Floating hearts background */
+        .floating-heart {
+            position: fixed;
+            font-size: 30px;
+            opacity: 0.3;
+            animation: floatUp 10s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scene 1: Envelope -->
+    <div id="scene1">
+        <div class="envelope-container" onclick="openEnvelope()">
+            <div class="envelope">
+                <div class="envelope-back"></div>
+                <div class="envelope-flap">
+                    <div class="heart-sticker"></div>
+                </div>
+            </div>
+            <div class="instruction">Click to open</div>
+        </div>
+    </div>
+
+    <!-- Scene 2: Memory Hearts -->
+    <div id="scene2">
+        <div class="valentine-header">
+            <h1 class="header-title">Happy Valentine's Day Dhruv! 💕</h1>
+            <p class="header-message">Here are some of my favorite memories with you from last sem!<br>I love you so much ❤️</p>
+        </div>
+        <div class="rope"></div>
+        <div class="memories-container">
+            <div class="memory-card">
+                <div class="clothespin"></div>
+                <div class="memory-photo">
+                    <img src="mem1.jpeg" alt="Memory 1" class="memory-image">
+                </div>
+                <div class="memory-text">Watching the rain from the architecture building and then getting soaked</div>
+            </div>
+            <div class="memory-card">
+                <div class="clothespin"></div>
+                <div class="memory-photo">
+                    <img src="mem2.JPG" alt="Memory 2" class="memory-image">
+                </div>
+                <div class="memory-text">Countless happies together</div>
+            </div>
+            <div class="memory-card">
+                <div class="clothespin"></div>
+                <div class="memory-photo">
+                    <img src="mem3.jpeg" alt="Memory 3" class="memory-image">
+                </div>
+                <div class="memory-text">Urbana mexican food date and really had to shit after</div>
+            </div>
+            <div class="memory-card">
+                <div class="clothespin"></div>
+                <div class="memory-photo">
+                    <img src="mem4.jpeg" alt="Memory 4" class="memory-image">
+                </div>
+                <div class="memory-text">Helping you put your parts together lolllll</div>
+            </div>
+            <div class="memory-card">
+                <div class="clothespin"></div>
+                <div class="memory-photo">
+                    <img src="mem5.JPG" alt="Memory 5" class="memory-image">
+                </div>
+                <div class="memory-text">Diwali fobs ofc</div>
+            </div>
+            <div class="memory-card">
+                <div class="clothespin"></div>
+                <div class="memory-photo">
+                    <img src="mem6.jpeg" alt="Memory 6" class="memory-image">
+                </div>
+                <div class="memory-text">Wathcing the play Anastasia and sneakily eating m&m's during the play</div>
+            </div>
+            <div class="memory-card">
+                <div class="clothespin"></div>
+                <div class="memory-photo">
+                    <img src="mem7.jpeg" alt="Memory 7" class="memory-image">
+                </div>
+                <div class="memory-text">Seeing your beard freeze in the cold lmao</div>
+            </div>
+            <div class="memory-card">
+                <div class="clothespin"></div>
+                <div class="memory-photo">
+                    <img src="mem8.jpg" alt="Memory 8" class="memory-image">
+                </div>
+                <div class="memory-text">ofccc our new york date and seeing the brooklyn bridge for a split second</div>
+            </div>
+        </div>
+        <button class="continue-btn" onclick="startSnoopy()">Continue the magic </button>
+    </div>
+
+    <!-- Scene 3: Snoopy Walking -->
+    <div id="scene3">
+        <div class="snoopy">
+            <img src="kiss.png">
+        </div>
+        <div class="heart-explosion" id="heartExplosion"></div>
+    </div>
+
+    <!-- Scene 4: Choice -->
+    <div id="scene4">
+        <div class="question">Choose One! 💕</div>
+        <div class="choices">
+            <button class="choice-btn" onclick="makeChoice('sexy')">Sexy</button>
+            <button class="choice-btn" onclick="makeChoice('pretty')">Pretty</button>
+            <button class="choice-btn" onclick="makeChoice('cute')">Cute</button>
+        </div>
+    </div>
+
+    <!-- Scene 5: Final Photo -->
+    <div id="scene5">
+        <div class="final-photo">
+            <img src="me.jpg" alt="Your photo" class="user-photo" id="userPhoto">
+        </div>
+        <div class="final-message" id="finalMessage">Thanks for choosing cute!</div>
+        <div class="final-subtitle">See you on our date tonight </div>
+    </div>
+
+    <script>
+        // Create floating hearts in background
+        function createFloatingHearts() {
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart';
+                    heart.textContent = ['💗', '💗', '💗', '💗', '💗'][Math.floor(Math.random() * 5)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heart.style.fontSize = (20 + Math.random() * 20) + 'px';
+                    document.body.appendChild(heart);
+                }, i * 200);
+            }
+        }
+        createFloatingHearts();
+
+        // Scene 1: Open Envelope
+        function openEnvelope() {
+            const container = document.querySelector('.envelope-container');
+            const scene1 = document.getElementById('scene1');
+            
+            container.classList.add('opening');
+            
+            // Create confetti
+            setTimeout(() => {
+                for (let i = 0; i < 100; i++) {
+                    setTimeout(() => {
+                        createConfetti();
+                    }, i * 30);
+                }
+            }, 400);
+            
+            // Transition to scene 2
+            setTimeout(() => {
+                scene1.classList.add('hidden');
+                const scene2 = document.getElementById('scene2');
+                scene2.classList.add('active');
+            }, 1500);
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.background = ['#ff1493', '#ff69b4', '#ffc0cb', '#ff6b9d', '#c44569'][Math.floor(Math.random() * 5)];
+            confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+            confetti.style.animationDelay = Math.random() * 0.5 + 's';
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 4000);
+        }
+
+        // Scene 2 to 3: Start Snoopy Animation
+        function startSnoopy() {
+            const scene2 = document.getElementById('scene2');
+            const scene3 = document.getElementById('scene3');
+            const snoopy = document.querySelector('.snoopy');
+            
+            scene2.classList.remove('active');
+            scene3.classList.add('active');
+            
+            // Wait for Snoopy to reach center, then start dancing
+            setTimeout(() => {
+                snoopy.classList.add('dancing');
+            }, 3000);
+            
+            // Create explosion during the dance
+            setTimeout(() => {
+                createHeartExplosion();
+            }, 4500);
+            
+            // Transition to scene 4
+            setTimeout(() => {
+                scene3.classList.remove('active');
+                const scene4 = document.getElementById('scene4');
+                scene4.classList.add('active');
+            }, 6500);
+        }
+
+        function createHeartExplosion() {
+            const explosion = document.getElementById('heartExplosion');
+            explosion.classList.add('active');
+            
+            const hearts = ['💗', '💗', '💗', '💗', '💗', '💗', '💗'];
+            const angles = 16;
+            
+            for (let i = 0; i < angles; i++) {
+                const angle = (Math.PI * 2 * i) / angles;
+                const distance = 200 + Math.random() * 100;
+                const heart = document.createElement('div');
+                heart.className = 'explosion-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                heart.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                heart.style.animationDelay = (Math.random() * 0.2) + 's';
+                explosion.appendChild(heart);
+            }
+        }
+
+        // Scene 4: Make Choice
+        let selectedChoice = '';
+        
+        function makeChoice(choice) {
+            selectedChoice = choice;
+            const scene4 = document.getElementById('scene4');
+            const scene5 = document.getElementById('scene5');
+            
+            // Update final message based on choice
+            const messages = {
+                'sexy': 'Thanks for choosing sexy! ',
+                'pretty': 'Thanks for choosing pretty! ',
+                'cute': 'Thanks for choosing cute! '
+            };
+            
+            document.getElementById('finalMessage').textContent = messages[choice];
+            
+            // Create more confetti
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => createConfetti(), i * 50);
+            }
+            
+            // Transition to final scene
+            setTimeout(() => {
+                scene4.classList.remove('active');
+                scene5.classList.add('active');
+            }, 800);
+        }
+
+        // Handle image upload for final photo
+        // The user can replace the placeholder with their own photo
+        // For now, showing a placeholder that can be customized
+        
+        // Add some sparkles to the page
+        setInterval(() => {
+            createFloatingHearts();
+        }, 15000);
+    </script>
+</body>
+</html>
